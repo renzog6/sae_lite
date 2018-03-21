@@ -36,7 +36,7 @@ public class MainMenuController implements Initializable {
         try {
             boolean isLogin = true;
             if (isLogin) {
-                MainApp.showHome();
+                MainApp.showPartidos();
             } else {
                 System.out.println("ar.nex.syscontrol.MainMenuController.goSignIn(): ERROR");
             }

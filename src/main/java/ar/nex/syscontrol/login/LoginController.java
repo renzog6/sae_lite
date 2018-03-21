@@ -30,10 +30,10 @@ public class LoginController {
     void goSignIn() throws IOException {
         try {
             boolean isLogin = true;
-            EntityManagerFactory factory = Persistence.createEntityManagerFactory("SysControl.PU");
-            UsuarioJpaController jpaUsuario = new UsuarioJpaController(factory);
-
-            List<Usuario> lst = jpaUsuario.findUsuarioEntities();
+//            EntityManagerFactory factory = Persistence.createEntityManagerFactory("SysControl-PU");
+//            UsuarioJpaController jpaUsuario = new UsuarioJpaController(factory);
+//
+//            List<Usuario> lst = jpaUsuario.findUsuarioEntities();
 
             if (isLogin) {
                 MainApp.showMainMenu();

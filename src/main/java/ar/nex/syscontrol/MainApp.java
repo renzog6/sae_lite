@@ -19,8 +19,8 @@ public class MainApp extends Application {
         MainApp.stage.setTitle("SysControl");
         stage.setMaximized(true);
         MainApp.showMain();
-        MainApp.showMainMenu();
-        //MainApp.showLogin();
+        //MainApp.showMainMenu();
+        MainApp.showLogin();
         //MainApp.showHome();
     }
 
@@ -38,6 +38,14 @@ public class MainApp extends Application {
     public static void showMainMenu() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource("/fxml/MainMenu.fxml"));
+        BorderPane mainItems = loader.load();
+        //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
+        mainLayout.setCenter(mainItems);
+    }
+    
+    public static void showPartidos() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("/fxml/partido/Partido.fxml"));
         BorderPane mainItems = loader.load();
         //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
         mainLayout.setCenter(mainItems);

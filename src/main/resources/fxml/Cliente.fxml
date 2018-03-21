@@ -23,7 +23,7 @@
                         <Button fx:id="addnewBtn" layoutX="13.0" layoutY="225.0" minWidth="100.0" mnemonicParsing="false" onAction="#Add" text="Agregar" />
                         <Button fx:id="updateBtn" layoutX="13.0" layoutY="275.0" minWidth="100.0" mnemonicParsing="false" onAction="#Update" text="Actualizar" />                        
                         <Button fx:id="deleteBtn" layoutX="13.0" layoutY="325.0" minWidth="100.0" mnemonicParsing="false" onAction="#Delete" text="Borrar" />
-                        <Separator layoutX="13.0" layoutY="375.0"/>
+                        <Separator layoutX="13.0" layoutY="375" prefHeight="5.0" prefWidth="250.0" />
                         <Button fx:id="btnVerPartidos" layoutX="13.0" layoutY="425.0" minWidth="100.0" mnemonicParsing="false" onAction="#VerPartidos" text="Ver Partidos" />
                         
                     </children>
