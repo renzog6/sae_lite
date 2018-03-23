@@ -29,9 +29,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Partido.findAll", query = "SELECT p FROM Partido p")
     , @NamedQuery(name = "Partido.findById", query = "SELECT p FROM Partido p WHERE p.id = :id")
+    , @NamedQuery(name = "Partido.findByNombre", query = "SELECT p FROM Partido p WHERE p.nombre = :nombre")
     , @NamedQuery(name = "Partido.findByFecha", query = "SELECT p FROM Partido p WHERE p.fecha = :fecha")
     , @NamedQuery(name = "Partido.findByHora", query = "SELECT p FROM Partido p WHERE p.hora = :hora")
-    , @NamedQuery(name = "Partido.findByJugadores", query = "SELECT p FROM Partido p WHERE p.jugadores = :jugadores")
+    , @NamedQuery(name = "Partido.findByEstado", query = "SELECT p FROM Partido p WHERE p.estado = :estado")
     , @NamedQuery(name = "Partido.findByComentario", query = "SELECT p FROM Partido p WHERE p.comentario = :comentario")
     , @NamedQuery(name = "Partido.findByOtro", query = "SELECT p FROM Partido p WHERE p.otro = :otro")})
 public class Partido implements Serializable {
@@ -41,13 +42,14 @@ public class Partido implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Column(name = "nombre")
+    private String nombre;
     @Column(name = "fecha")
     private String fecha;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "hora")
-    private Double hora;
-    @Column(name = "jugadores")
-    private Integer jugadores;
+    private String hora;
+    @Column(name = "estado")
+    private Integer estado;
     @Column(name = "comentario")
     private String comentario;
     @Column(name = "otro")
@@ -78,22 +80,6 @@ public class Partido implements Serializable {
         this.fecha = fecha;
     }
 
-    public Double getHora() {
-        return hora;
-    }
-
-    public void setHora(Double hora) {
-        this.hora = hora;
-    }
-
-    public Integer getJugadores() {
-        return jugadores;
-    }
-
-    public void setJugadores(Integer jugadores) {
-        this.jugadores = jugadores;
-    }
-
     public String getComentario() {
         return comentario;
     }
@@ -108,6 +94,30 @@ public class Partido implements Serializable {
 
     public void setOtro(Integer otro) {
         this.otro = otro;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getHora() {
+        return hora;
+    }
+
+    public void setHora(String hora) {
+        this.hora = hora;
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
     }
 
     @XmlTransient

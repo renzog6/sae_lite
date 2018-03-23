@@ -19,9 +19,10 @@ public class MainApp extends Application {
         MainApp.stage.setTitle("SysControl");
         stage.setMaximized(true);
         MainApp.showMain();
-        //MainApp.showMainMenu();
-        MainApp.showLogin();
+        MainApp.showMainMenu();
+        //MainApp.showLogin();
         //MainApp.showHome();
+        //MainApp.showPartidos();
     }
 
     public static void showMain() throws IOException {

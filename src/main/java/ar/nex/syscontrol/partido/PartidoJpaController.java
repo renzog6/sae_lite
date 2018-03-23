@@ -1,13 +1,19 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ar.nex.syscontrol.partido;
 
-import ar.nex.syscontrol.cliente.Cliente;
-import ar.nex.syscontrol.partido.exceptions.NonexistentEntityException;
-import ar.nex.syscontrol.partido.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import ar.nex.syscontrol.cliente.Cliente;
+import ar.nex.syscontrol.exceptions.NonexistentEntityException;
+import ar.nex.syscontrol.exceptions.PreexistingEntityException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

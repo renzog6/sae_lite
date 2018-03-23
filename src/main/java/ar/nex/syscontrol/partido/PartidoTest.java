@@ -24,8 +24,9 @@ public class PartidoTest {
         ClienteJpaController sCliente = new ClienteJpaController(factory);
         
         Partido p = new Partido();
+        p.setNombre("Partido X");
         p.setFecha("2018/01/22");
-        p.setHora(22.00);
+        p.setHora("22.00");
         sPartido.create(p);
         p = sPartido.findLastPartido();
         System.err.println(" Partido ID: " + p.getId());
