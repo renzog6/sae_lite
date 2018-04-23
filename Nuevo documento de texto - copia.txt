@@ -1,0 +1,1 @@
+c:\java\jdk\jarsigner -keystore jfx.keystore -verbose -keypass keyPassword -storepass storePassword SysControl-jfx.jar jfx

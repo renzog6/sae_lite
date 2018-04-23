@@ -2,7 +2,6 @@ package ar.nex.syscontrol.partido;
 
 import ar.nex.syscontrol.cliente.Cliente;
 import ar.nex.syscontrol.cliente.ClienteJpaController;
-import com.sun.org.apache.xalan.internal.xsltc.cmdline.getopt.GetOpt;
 import java.util.Collection;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

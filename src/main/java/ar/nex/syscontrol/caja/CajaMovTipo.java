@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CajaMovTipo.findAll", query = "SELECT c FROM CajaMovTipo c")
     , @NamedQuery(name = "CajaMovTipo.findById", query = "SELECT c FROM CajaMovTipo c WHERE c.id = :id")
     , @NamedQuery(name = "CajaMovTipo.findByNombre", query = "SELECT c FROM CajaMovTipo c WHERE c.nombre = :nombre")
-    , @NamedQuery(name = "CajaMovTipo.findByPrecio", query = "SELECT c FROM CajaMovTipo c WHERE c.precio = :precio")
+    , @NamedQuery(name = "CajaMovTipo.findByPrecio", query = "SELECT c FROM CajaMovTipo c WHERE c.importe = :importe")
     , @NamedQuery(name = "CajaMovTipo.findByComentario", query = "SELECT c FROM CajaMovTipo c WHERE c.comentario = :comentario")
     , @NamedQuery(name = "CajaMovTipo.findByOtro", query = "SELECT c FROM CajaMovTipo c WHERE c.otro = :otro")})
 public class CajaMovTipo implements Serializable {
@@ -36,11 +36,13 @@ public class CajaMovTipo implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Column(name = "tipo")
+    private Integer tipo;
     @Column(name = "nombre")
     private String nombre;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "precio")
-    private Double precio;
+    @Column(name = "importe")
+    private Double importe;
     @Column(name = "comentario")
     private String comentario;
     @Column(name = "otro")
@@ -67,14 +69,6 @@ public class CajaMovTipo implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
     }
 
     public String getComentario() {
@@ -115,7 +109,23 @@ public class CajaMovTipo implements Serializable {
 
     @Override
     public String toString() {
-        return "ar.nex.syscontrol.config.CajaMovTipo[ id=" + id + " ]";
+        return nombre + " - $" + importe.toString();
     }
-    
+
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
+    }
+
+    public Double getImporte() {
+        return importe;
+    }
+
+    public void setImporte(Double importe) {
+        this.importe = importe;
+    }
+
 }

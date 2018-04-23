@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 
 /**
  * FXML Controller class
@@ -29,6 +30,9 @@ public class MainMenuController implements Initializable {
     Button btnConfig;
 
     @FXML
+    ProgressIndicator progressIndicator;
+
+    @FXML
     public void goPartidos() throws IOException {
         try {
             boolean isLogin = true;
@@ -44,7 +48,39 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
+    public void goArticulos() throws IOException {
+        try {
+            boolean isLogin = true;
+            if (isLogin) {
+                MainApp.showArticulos();
+            } else {
+                System.out.println("ar.nex.syscontrol.MainMenuController.goSignIn(): ERROR");
+            }
+        } catch (Exception e) {
+            System.out.println("ar.nex.syscontrol.MainMenuController.goSignIn(): ERROR");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void goCajaMovCliente() throws IOException {
+        System.out.println("ar.nex.syscontrol.MainMenuController.goClientes()");
+        try {
+            boolean isLogin = true;
+            if (isLogin) {
+                MainApp.showCajaMovClientes();
+            } else {
+                System.out.println("ar.nex.syscontrol.MainMenuController.goSignIn(): ERROR");
+            }
+        } catch (Exception e) {
+            System.out.println("ar.nex.syscontrol.MainMenuController.goSignIn(): ERROR");
+            e.printStackTrace();
+        }
+    }
+    
+        @FXML
     public void goClientes() throws IOException {
+        System.out.println("ar.nex.syscontrol.MainMenuController.goClientes()");
         try {
             boolean isLogin = true;
             if (isLogin) {
@@ -75,6 +111,7 @@ public class MainMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb
     ) {
         // TODO
+        progressIndicator.setProgress(-1.0f);
     }
 
 }

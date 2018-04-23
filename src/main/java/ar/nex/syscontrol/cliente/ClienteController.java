@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -23,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -123,7 +125,6 @@ public class ClienteController implements Initializable {
     }
 
     static Cliente clienteSelect;
-
     @FXML
     public void showOnClick() {
         System.out.println("ar.nex.syscontrol.config.ConfigController.showOnClick()");
@@ -205,8 +206,11 @@ public class ClienteController implements Initializable {
     }
 
     @FXML
-    void goSignOut() throws IOException {
-        MainApp.showLogin();
+    Button signOut;
+    @FXML
+    void goSignOut(ActionEvent event) throws IOException {
+        Stage stage = (Stage) signOut.getScene().getWindow();
+        stage.close();
     }
 
     @FXML

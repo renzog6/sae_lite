@@ -62,6 +62,7 @@ public class Cliente implements Serializable {
     private String comentario;
 
     public Cliente() {
+        this.saldo = 0.0;
     }
 
     public Cliente(Integer id) {
@@ -149,5 +150,5 @@ public class Cliente implements Serializable {
     public void setPartidoCollection(Collection<Partido> partidoCollection) {
         this.partidoCollection = partidoCollection;
     }
-    
+
 }

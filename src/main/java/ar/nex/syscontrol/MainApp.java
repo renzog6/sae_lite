@@ -19,6 +19,7 @@ public class MainApp extends Application {
         MainApp.stage.setTitle("SysControl");
         stage.setMaximized(true);
         MainApp.showMain();
+        //MainApp.showClientes();
         MainApp.showMainMenu();
         //MainApp.showLogin();
         //MainApp.showHome();
@@ -43,7 +44,7 @@ public class MainApp extends Application {
         //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
         mainLayout.setCenter(mainItems);
     }
-    
+
     public static void showPartidos() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource("/fxml/partido/Partido.fxml"));
@@ -52,9 +53,33 @@ public class MainApp extends Application {
         mainLayout.setCenter(mainItems);
     }
 
+    public static void showArticulos() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("/fxml/caja/Articulo.fxml"));
+        BorderPane mainItems = loader.load();
+        //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
+        mainLayout.setCenter(mainItems);
+    }
+
+    public static void showAddArticuloCliente() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("/fxml/caja/ArticuloAddCliente.fxml"));
+        BorderPane mainItems = loader.load();
+        //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
+        mainLayout.setCenter(mainItems);
+    }
+
     public static void showClientes() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource("/fxml/Cliente.fxml"));
+        BorderPane mainItems = loader.load();
+        //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
+        mainLayout.setCenter(mainItems);
+    }
+
+    public static void showCajaMovClientes() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("/fxml/caja/CajaMovCliente.fxml"));
         BorderPane mainItems = loader.load();
         //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
         mainLayout.setCenter(mainItems);

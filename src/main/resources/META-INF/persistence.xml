@@ -6,6 +6,8 @@
     <class>ar.nex.syscontrol.cliente.Cliente</class>
     <class>ar.nex.syscontrol.caja.CajaMovTipo</class>
     <class>ar.nex.syscontrol.partido.Partido</class>
+    <class>ar.nex.syscontrol.config.Historial</class>
+    <class>ar.nex.syscontrol.caja.CajaMovCliente</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:c:\java\syscontrol.db"/>
       <property name="javax.persistence.jdbc.user" value=""/>

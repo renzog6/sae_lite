@@ -1,12 +1,13 @@
-package ar.nex.syscontrol.config;
+package ar.nex.syscontrol.caja;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import ar.nex.syscontrol.MainApp;
-import ar.nex.syscontrol.login.Usuario;
-import ar.nex.syscontrol.login.UsuarioJpaController;
+import ar.nex.syscontrol.config.HistorialService;
+import ar.nex.syscontrol.caja.CajaMovTipo;
+import ar.nex.syscontrol.caja.CajaMovTipoJpaController;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -27,27 +28,27 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class ConfigController implements Initializable {
+public class ArticuloController implements Initializable {
 
     HistorialService historial = new HistorialService();
     
-    ObservableList<Usuario> data = FXCollections.observableArrayList();
-    FilteredList<Usuario> filteredData = new FilteredList<>(data,e->true);
+    ObservableList<CajaMovTipo> data = FXCollections.observableArrayList();
+    FilteredList<CajaMovTipo> filteredData = new FilteredList<>(data);
 
     @FXML
     private Button signOut;
 
     @FXML
-    TableView<Usuario> table;
+    TableView<CajaMovTipo> table;
 
     @FXML
-    private TableColumn<?, ?> nameCol;
+    private TableColumn<?, ?> colArticulo;
 
     @FXML
-    private TableColumn<?, ?> usernameCol;
+    private TableColumn<?, ?> colImporte;
 
     @FXML
-    private TableColumn<?, ?> passwordCol;
+    private TableColumn<?, ?> colComentario;
 
     @FXML
     Button addnewBtn;
@@ -62,42 +63,42 @@ public class ConfigController implements Initializable {
     TextField searchBox;
 
     @FXML
-    TextField usernameBox;
+    TextField boxNombre;
 
     @FXML
-    TextField nameBox;
+    TextField boxImporte;
 
     @FXML
-    TextField passwordBox;
+    TextField boxComentario;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        usernameCol.setCellValueFactory(new PropertyValueFactory<>("user"));
-        passwordCol.setCellValueFactory(new PropertyValueFactory<>("pass"));
+        colArticulo.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colImporte.setCellValueFactory(new PropertyValueFactory<>("importe"));
+        colComentario.setCellValueFactory(new PropertyValueFactory<>("comentario"));
         loadDatabaseData();
     }
 
     private EntityManagerFactory factory;// = Persistence.createEntityManagerFactory("SysServices-PU");
-    private UsuarioJpaController dao;// = new UsuarioJpaController(factory);
+    private CajaMovTipoJpaController dao;// = new CajaMovTipoJpaController(factory);
 
-    public void UsuarioService() {
-        System.out.println("ar.sys.usuario.UsuarioService.<init>()");
+    public void CajaMovTipoService() {
+        System.out.println("ar.sys.usuario.CajaMovTipoService.<init>()");
         factory = Persistence.createEntityManagerFactory("SysControl-PU");
-        dao = new UsuarioJpaController(factory);
+        dao = new CajaMovTipoJpaController(factory);
     }
 
     public void loadDatabaseData() {
         System.out.println("ar.nex.syscontrol.config.ConfigController.loadDatabaseData()");
         try {
-            nameBox.clear();
-            usernameBox.clear();
-            passwordBox.clear();
+            boxNombre.clear();
+            boxImporte.clear();
+            boxComentario.clear();
             data.clear();
 
-            UsuarioService();
-            List<Usuario> lst = dao.findUsuarioEntities();
-            for (Usuario usuario : lst) {
+            CajaMovTipoService();
+            List<CajaMovTipo> lst = dao.findCajaMovTipoEntities();
+            for (CajaMovTipo usuario : lst) {
                 data.add(usuario);
                 table.setItems(data);
             }
@@ -111,36 +112,36 @@ public class ConfigController implements Initializable {
     public void Add() throws Exception {
         System.out.println("ar.nex.syscontrol.config.ConfigController.Add()");
 
-        String name = nameBox.getText();
-        String user = usernameBox.getText();
-        String pass = passwordBox.getText();
+        String nombre = boxNombre.getText();
+        String importe = boxImporte.getText();
+        String comentario = boxComentario.getText();
 
         try {
-            Usuario u = new Usuario();
-            u.setName(name);
-            u.setUser(user);
-            u.setPass(pass);
+            CajaMovTipo u = new CajaMovTipo();
+            u.setNombre(nombre);
+            u.setImporte(Double.parseDouble( importe.replace(",",".") ));
+            u.setComentario(comentario);
             dao.create(u);
         } catch (Exception e) {
             System.out.println(e);
         }
         loadDatabaseData();
-        MainApp.showInformationAlertBox("New Usuario '" + name + "' Added Successfully!");        
-        historial.GuardarEvento("New Usuario " + name);
+        MainApp.showInformationAlertBox("Nuevo Aticulo: " + nombre + " Added Successfully!");        
+        historial.GuardarEvento("New CajaMovTipo > Articulo: " + nombre+" a $"+importe);
     }
 
-    static Usuario usuarioSelect;
+    static CajaMovTipo usuarioSelect;
 
     @FXML
     public void showOnClick() {
         System.out.println("ar.nex.syscontrol.config.ConfigController.showOnClick()");
         try {
-            Usuario user = (Usuario) table.getSelectionModel().getSelectedItem();
-            usuarioSelect = dao.findUsuario(user.getId());
+            CajaMovTipo user = (CajaMovTipo) table.getSelectionModel().getSelectedItem();
+            usuarioSelect = dao.findCajaMovTipo(user.getId());
 
-            nameBox.setText(user.getName());
-            usernameBox.setText(user.getUser());
-            passwordBox.setText(user.getPass());
+            boxNombre.setText(user.getNombre());
+            boxImporte.setText(user.getImporte().toString());
+            boxComentario.setText(user.getComentario());
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -152,7 +153,7 @@ public class ConfigController implements Initializable {
         try {
             if (confirmDialog()) {
                 dao.destroy(usuarioSelect.getId());
-                MainApp.showInformationAlertBox("Usuario '" + usuarioSelect.getName() + "' Deleted Successfully!");
+                MainApp.showInformationAlertBox("CajaMovTipo '" + usuarioSelect.getNombre()+ "' Deleted Successfully!");
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -164,11 +165,11 @@ public class ConfigController implements Initializable {
     public void Update() {
         System.out.println("ar.nex.syscontrol.config.ConfigController.Update()");
         try {
-            usuarioSelect.setName(nameBox.getText());
-            usuarioSelect.setUser(usernameBox.getText());
-            usuarioSelect.setPass(passwordBox.getText());
+            usuarioSelect.setNombre(boxNombre.getText());
+            usuarioSelect.setImporte(Double.parseDouble( boxImporte.getText().replace(",",".") ));
+            usuarioSelect.setComentario(boxComentario.getText());
             dao.edit(usuarioSelect);
-            MainApp.showInformationAlertBox("Usuario '" + nameBox.getText() + "' Updated Successfully!");
+            MainApp.showInformationAlertBox("CajaMovTipo '" + boxNombre.getText() + "' Updated Successfully!");
             loadDatabaseData();
         } catch (Exception e) {
             System.out.println(e);
@@ -178,21 +179,21 @@ public class ConfigController implements Initializable {
     @FXML
     public void Search() {
 		searchBox.textProperty().addListener((observableValue,oldValue,newValue)->{
-			filteredData.setPredicate((Predicate<? super Usuario>)user->{
+			filteredData.setPredicate((Predicate<? super CajaMovTipo>)user->{
 				if(newValue==null||newValue.isEmpty()){
 					return true;
 				}
 				String lowerCaseFilter=newValue.toLowerCase();
-				if(user.getName().toLowerCase().contains(lowerCaseFilter)){
+				if(user.getNombre().toLowerCase().contains(lowerCaseFilter)){
 					return true;
 				}
-				else if(user.getName().toLowerCase().contains(lowerCaseFilter)){
+				else if(user.getNombre().toLowerCase().contains(lowerCaseFilter)){
 					return true;
 				}
 				return false;
 			});
 		});
-		SortedList<Usuario> sortedData=new SortedList<>(filteredData);
+		SortedList<CajaMovTipo> sortedData=new SortedList<>(filteredData);
 		sortedData.comparatorProperty().bind(table.comparatorProperty());
 		table.setItems(sortedData);
     }
@@ -200,7 +201,7 @@ public class ConfigController implements Initializable {
     public boolean confirmDialog() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Confirma que desea ELIMINAR al usuario: " + usuarioSelect.getName());
+        alert.setHeaderText("Confirma que desea ELIMINAR el articulo: " + usuarioSelect.getNombre());
         
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
@@ -212,7 +213,7 @@ public class ConfigController implements Initializable {
 
     @FXML
     void goSignOut() throws IOException {
-        MainApp.showLogin();
+        MainApp.showMainMenu();
     }
 
 }
