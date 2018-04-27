@@ -5,12 +5,15 @@
  */
 package ar.nex.syscontrol;
 
+import ar.nex.syscontrol.login.LoginController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 
 /**
@@ -28,6 +31,8 @@ public class MainMenuController implements Initializable {
     Button btnCaja;
     @FXML
     Button btnConfig;
+    @FXML
+    Label lblUser;
 
     @FXML
     ProgressIndicator progressIndicator;
@@ -77,8 +82,8 @@ public class MainMenuController implements Initializable {
             e.printStackTrace();
         }
     }
-    
-        @FXML
+
+    @FXML
     public void goClientes() throws IOException {
         System.out.println("ar.nex.syscontrol.MainMenuController.goClientes()");
         try {
@@ -96,9 +101,36 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void goConfig() throws IOException {
+        System.out.println("ar.nex.syscontrol.MainMenuController.goConfig()");
+        try {
+            if (LoginController.isAdmin()) {
+                MainApp.showConfig();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!!!");
+                alert.setContentText("Solo en Administrador puede ingresar!!!");
+                alert.showAndWait();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void goCaja() throws IOException {
         try {
             System.out.println("ar.nex.syscontrol.MainMenuController.goConfig()");
-            MainApp.showConfig();
+            MainApp.showCaja();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void goHistorial() throws IOException {
+        try {
+            System.out.println("ar.nex.syscontrol.MainMenuController.goConfig()");
+            MainApp.goHistorial();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,8 +142,8 @@ public class MainMenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb
     ) {
-        // TODO
-        progressIndicator.setProgress(-1.0f);
+
+        lblUser.setText("Usuario [ " + LoginController.getUserLogin().getName() + " ]");
     }
 
 }

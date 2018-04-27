@@ -1,10 +1,12 @@
 package ar.nex.syscontrol.config;
 
 import ar.nex.syscontrol.config.HistorialJpaController;
+import ar.nex.syscontrol.login.LoginController;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -32,9 +34,11 @@ public class HistorialService implements Serializable {
 
     public void GuardarEvento(String txt) {
         try {
+            String u = LoginController.getUserLogin().getName();
+
             this.evento = new Historial();
-            this.evento.setEvento(txt);
-            
+            this.evento.setEvento(u + " : [ " + txt + " ]");
+
             this.fecha = new Date();
             DateFormat formato = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
             this.evento.setFecha(formato.format(fecha));
@@ -43,6 +47,10 @@ public class HistorialService implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(HistorialService.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public List<Historial> ListHistorial() {
+        return this.service.findHistorialEntities();
     }
 
 }

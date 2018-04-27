@@ -74,9 +74,10 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="50.0" prefWidth="100.0" />
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="48.0" prefWidth="525.0">
                     <children>
-                        <Button fx:id="updateBtn" layoutX="289.0" layoutY="18.0" minWidth="100.0" mnemonicParsing="false" onAction="#ClienteCobrarDialog" text="Cobrar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0" />                        
-                        <Button fx:id="deleteBtn" layoutX="296.0" layoutY="8.0" minWidth="100.0" mnemonicParsing="false" onAction="#ArticuloDelete" text="Borrar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="150.0" />                        
-                        <Button fx:id="addnewBtn" layoutX="166.0" layoutY="8.0" minWidth="100.0" mnemonicParsing="false" onAction="#ArticuloAdd" text="Agregar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="280.0" />
+                        <Button fx:id="btnCobrar" layoutX="100.0" layoutY="8.0" minWidth="100.0" mnemonicParsing="false" onAction="#ClienteCobrarDialog" text="Cobrar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0" />                        
+                        <Button fx:id="deleteBtn" layoutX="100.0" layoutY="8.0" minWidth="100.0" mnemonicParsing="false" onAction="#ArticuloDelete" text="Borrar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="150.0" />                        
+                        <Button fx:id="addnewBtn" layoutX="100.0" layoutY="8.0" minWidth="100.0" mnemonicParsing="false" onAction="#ArticuloAdd" text="Agregar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="280.0" />
+                        <Button fx:id="btnDetalle" layoutX="100.0" layoutY="8.0" minWidth="100.0" mnemonicParsing="false" onAction="#CajaDetalleCliente" text="Detalle" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="410.0" />
                     </children>
                 </AnchorPane>
             </items>

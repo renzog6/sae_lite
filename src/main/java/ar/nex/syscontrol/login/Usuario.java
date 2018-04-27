@@ -103,7 +103,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "ar.nex.syscontrol.login.Usuario[ id=" + id + " ][ id=" + id + " ][ id=" + name + " ]";
+        return "Usuario[ " + name + " ][ user=" + user + " ]";
     }
     
 }

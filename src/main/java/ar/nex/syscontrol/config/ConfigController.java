@@ -212,7 +212,7 @@ public class ConfigController implements Initializable {
 
     @FXML
     void goSignOut() throws IOException {
-        MainApp.showLogin();
+        MainApp.showMainMenu();
     }
 
 }

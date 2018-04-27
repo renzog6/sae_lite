@@ -8,27 +8,28 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class MainApp extends Application {
+public class MainXTest extends Application {
 
     public static Stage stage;
     private static BorderPane mainLayout;
 
     @Override
     public void start(Stage stage) throws Exception {
-        MainApp.stage = stage;
-        MainApp.stage.setTitle("SysControl");
+        MainXTest.stage = stage;
+        MainXTest.stage.setTitle("SysControl");
         stage.setMaximized(true);
-        MainApp.showMain();
+        MainXTest.showMain();
+        MainXTest.showCaja();
         //MainApp.showClientes();
         //MainApp.showMainMenu();
-        MainApp.showLogin();
+        //MainXTest.showLogin();        
         //MainApp.showHome();
         //MainApp.showPartidos();
     }
 
     public static void showMain() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/MainView.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/MainView.fxml"));
         mainLayout = loader.load();
 
         Scene scene = new Scene(mainLayout);
@@ -39,7 +40,7 @@ public class MainApp extends Application {
 
     public static void showMainMenu() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/MainMenu.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/MainMenu.fxml"));
         BorderPane mainItems = loader.load();
         mainItems.getStylesheets().add("/styles/MainMenu.css");
         mainLayout.setCenter(mainItems);
@@ -47,7 +48,7 @@ public class MainApp extends Application {
 
     public static void showPartidos() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/partido/Partido.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/partido/Partido.fxml"));
         BorderPane mainItems = loader.load();
         //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
         mainLayout.setCenter(mainItems);
@@ -55,7 +56,7 @@ public class MainApp extends Application {
 
     public static void showArticulos() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/caja/Articulo.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/caja/Articulo.fxml"));
         BorderPane mainItems = loader.load();
         //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
         mainLayout.setCenter(mainItems);
@@ -63,7 +64,7 @@ public class MainApp extends Application {
 
     public static void showAddArticuloCliente() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/caja/ArticuloAddCliente.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/caja/ArticuloAddCliente.fxml"));
         BorderPane mainItems = loader.load();
         //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
         mainLayout.setCenter(mainItems);
@@ -71,7 +72,7 @@ public class MainApp extends Application {
 
     public static void showClientes() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/Cliente.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/Cliente.fxml"));
         BorderPane mainItems = loader.load();
         //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
         mainLayout.setCenter(mainItems);
@@ -79,7 +80,7 @@ public class MainApp extends Application {
 
     public static void showCajaMovClientes() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/caja/CajaMovCliente.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/caja/CajaMovCliente.fxml"));
         BorderPane mainItems = loader.load();
         //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
         mainLayout.setCenter(mainItems);
@@ -87,7 +88,7 @@ public class MainApp extends Application {
 
     public static void showConfig() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/Config.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/Config.fxml"));
         BorderPane mainItems = loader.load();
         //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
         mainLayout.setCenter(mainItems);
@@ -95,7 +96,7 @@ public class MainApp extends Application {
     
     public static void showCaja() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/caja/CajaMov.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/caja/CajaMov.fxml"));
         BorderPane mainItems = loader.load();
         //mainItems.getStylesheets().add("/styles/StylesMainMenu.css");
         mainLayout.setCenter(mainItems);
@@ -103,21 +104,21 @@ public class MainApp extends Application {
     
     public static void showLogin() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/Login.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/Login.fxml"));
         BorderPane mainItems = loader.load();
         mainLayout.setCenter(mainItems);
     }
 
     public static void showHome() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/Home.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/Home.fxml"));
         BorderPane mainItems = loader.load();
         mainLayout.setCenter(mainItems);
     }
 
     public static void goHistorial() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/fxml/config/HistorialDetalle.fxml"));
+        loader.setLocation(MainXTest.class.getResource("/fxml/config/HistorialDetalle.fxml"));
         BorderPane mainItems = loader.load();
         mainLayout.setCenter(mainItems);
     }

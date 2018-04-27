@@ -204,13 +204,10 @@ public class ClienteController implements Initializable {
             return false;
         }
     }
-
+    
     @FXML
-    Button signOut;
-    @FXML
-    void goSignOut(ActionEvent event) throws IOException {
-        Stage stage = (Stage) signOut.getScene().getWindow();
-        stage.close();
+    void goSignOut() throws IOException {
+        MainApp.showMainMenu();
     }
 
     @FXML

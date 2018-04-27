@@ -14,7 +14,7 @@ public class UsuarioService {
 
     public UsuarioService() {
         System.out.println("ar.sys.usuario.UsuarioService.<init>()");
-        factory = Persistence.createEntityManagerFactory("SysFX-PU");
+        factory = Persistence.createEntityManagerFactory("SysControl-PU");
         dao = new UsuarioJpaController(factory);
     }
 

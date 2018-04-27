@@ -165,15 +165,27 @@ public class ArticuloController implements Initializable {
     public void Update() {
         System.out.println("ar.nex.syscontrol.config.ConfigController.Update()");
         try {
+            
+            UpdatePendiente(usuarioSelect);
+            
             usuarioSelect.setNombre(boxNombre.getText());
             usuarioSelect.setImporte(Double.parseDouble( boxImporte.getText().replace(",",".") ));
             usuarioSelect.setComentario(boxComentario.getText());
             dao.edit(usuarioSelect);
             MainApp.showInformationAlertBox("CajaMovTipo '" + boxNombre.getText() + "' Updated Successfully!");
+            
+            UpdatePendiente(usuarioSelect);
+            historial.GuardarEvento("El Articulo "+ usuarioSelect.toString()+" fue Actualizado.");
             loadDatabaseData();
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    
+    public void UpdatePendiente(CajaMovTipo mv){
+        System.out.println("ar.nex.syscontrol.caja.ArticuloController.UpdatePendiente()");
+        CajaMovClienteService movService = new CajaMovClienteService();
+        movService.UpdateMovCLiente(mv);
     }
 
     @FXML

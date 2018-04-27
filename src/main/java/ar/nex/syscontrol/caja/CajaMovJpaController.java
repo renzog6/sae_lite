@@ -5,9 +5,10 @@
  */
 package ar.nex.syscontrol.caja;
 
-import ar.nex.syscontrol.caja.CajaMovCliente;
+import ar.nex.syscontrol.caja.CajaMov;
 import ar.nex.syscontrol.exceptions.NonexistentEntityException;
 import ar.nex.syscontrol.exceptions.PreexistingEntityException;
+import ar.nex.syscontrol.partido.Partido;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -21,9 +22,9 @@ import javax.persistence.criteria.Root;
  *
  * @author Renzo
  */
-public class CajaMovClienteJpaController implements Serializable {
+public class CajaMovJpaController implements Serializable {
 
-    public CajaMovClienteJpaController(EntityManagerFactory emf) {
+    public CajaMovJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -32,16 +33,16 @@ public class CajaMovClienteJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(CajaMovCliente cajaMovCliente) throws PreexistingEntityException, Exception {
+    public void create(CajaMov cajaMov) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(cajaMovCliente);
+            em.persist(cajaMov);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findCajaMovCliente(cajaMovCliente.getId()) != null) {
-                throw new PreexistingEntityException("CajaMovCliente " + cajaMovCliente + " already exists.", ex);
+            if (findCajaMov(cajaMov.getId()) != null) {
+                throw new PreexistingEntityException("CajaMov " + cajaMov + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -51,19 +52,19 @@ public class CajaMovClienteJpaController implements Serializable {
         }
     }
 
-    public void edit(CajaMovCliente cajaMovCliente) throws NonexistentEntityException, Exception {
+    public void edit(CajaMov cajaMov) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            cajaMovCliente = em.merge(cajaMovCliente);
+            cajaMov = em.merge(cajaMov);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = cajaMovCliente.getId();
-                if (findCajaMovCliente(id) == null) {
-                    throw new NonexistentEntityException("The cajaMovCliente with id " + id + " no longer exists.");
+                Integer id = cajaMov.getId();
+                if (findCajaMov(id) == null) {
+                    throw new NonexistentEntityException("The cajaMov with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -79,14 +80,14 @@ public class CajaMovClienteJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            CajaMovCliente cajaMovCliente;
+            CajaMov cajaMov;
             try {
-                cajaMovCliente = em.getReference(CajaMovCliente.class, id);
-                cajaMovCliente.getId();
+                cajaMov = em.getReference(CajaMov.class, id);
+                cajaMov.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The cajaMovCliente with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The cajaMov with id " + id + " no longer exists.", enfe);
             }
-            em.remove(cajaMovCliente);
+            em.remove(cajaMov);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -95,19 +96,19 @@ public class CajaMovClienteJpaController implements Serializable {
         }
     }
 
-    public List<CajaMovCliente> findCajaMovClienteEntities() {
-        return findCajaMovClienteEntities(true, -1, -1);
+    public List<CajaMov> findCajaMovEntities() {
+        return findCajaMovEntities(true, -1, -1);
     }
 
-    public List<CajaMovCliente> findCajaMovClienteEntities(int maxResults, int firstResult) {
-        return findCajaMovClienteEntities(false, maxResults, firstResult);
+    public List<CajaMov> findCajaMovEntities(int maxResults, int firstResult) {
+        return findCajaMovEntities(false, maxResults, firstResult);
     }
 
-    private List<CajaMovCliente> findCajaMovClienteEntities(boolean all, int maxResults, int firstResult) {
+    private List<CajaMov> findCajaMovEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(CajaMovCliente.class));
+            cq.select(cq.from(CajaMov.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -119,52 +120,30 @@ public class CajaMovClienteJpaController implements Serializable {
         }
     }
 
-    public List<CajaMovCliente> findCajaMovPendiente() {
+    public CajaMov findCajaMov(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            Query q;
-            q = em.createQuery("SELECT p FROM CajaMovCliente p WHERE p.estado = 0", CajaMovCliente.class);
-            return q.getResultList();
+            return em.find(CajaMov.class, id);
         } finally {
             em.close();
         }
     }
 
-    public List<CajaMovCliente> findCajaMovPendiente(int idCliente) {
+    public CajaMov findLast() {
         EntityManager em = getEntityManager();
-        try {
-            Query q;
-            q = em.createQuery("SELECT p FROM CajaMovCliente p WHERE p.clienteId = " + idCliente + " and p.estado = 0", CajaMovCliente.class);
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-        public List<CajaMovCliente> findCajaMovClienteAll(Integer idCliente) {
-        EntityManager em = getEntityManager();
-        try {
-            Query q;
-            q = em.createQuery("SELECT p FROM CajaMovCliente p WHERE p.clienteId = " + idCliente, CajaMovCliente.class);
-            return q.getResultList();
+        try {            
+            Query q = em.createQuery("SELECT p FROM CajaMov p ORDER BY p.id DESC", CajaMov.class);
+            return (CajaMov) q.getResultList().get(0);
         } finally {
             em.close();
         }
     }
 
-    public CajaMovCliente findCajaMovCliente(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(CajaMovCliente.class, id);
-        } finally {
-            em.close();
-        }
-    }
-
-    public int getCajaMovClienteCount() {
+    public int getCajaMovCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<CajaMovCliente> rt = cq.from(CajaMovCliente.class);
+            Root<CajaMov> rt = cq.from(CajaMov.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

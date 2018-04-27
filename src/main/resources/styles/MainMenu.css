@@ -1,12 +1,5 @@
 .button-menu {
-    padding: 500px;
-}
-
-.sidebar-section Botton{
-    padding: 50px 50px 50px 50px;
-    background-color: chartreuse;
-}
-.sidebar-section .button{
-    padding: 50px 50px 50px 50px;
-    background-color: chartreuse;
+    
+    -fx-pref-height: 200px;
+    -fx-pref-width: 120px;
 }

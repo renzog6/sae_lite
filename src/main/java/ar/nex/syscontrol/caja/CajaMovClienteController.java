@@ -6,7 +6,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import ar.nex.syscontrol.MainApp;
-import static ar.nex.syscontrol.MainApp.stage;
+import ar.nex.syscontrol.config.HistorialService;
+import ar.nex.syscontrol.utils.DialogController;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
@@ -32,17 +34,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
@@ -55,6 +54,7 @@ public class CajaMovClienteController implements Initializable {
     ObservableList<CajaMovCliente> dataArticulo = FXCollections.observableArrayList();
     FilteredList<CajaMovCliente> filteredArticulo = new FilteredList<>(dataArticulo);
     private CajaMovCliente selectArticulo;
+
     @FXML
     private TableColumn<?, ?> colFecha;
     @FXML
@@ -68,7 +68,7 @@ public class CajaMovClienteController implements Initializable {
     TableView<Cliente> tblCliente;
     ObservableList<Cliente> dataCliente = FXCollections.observableArrayList();
     FilteredList<Cliente> filteredCliente = new FilteredList<>(dataCliente);
-    private Cliente selectCliente;
+    private static Cliente selectCliente;
     @FXML
     private TableColumn<?, ?> colCliente;
     @FXML
@@ -96,6 +96,8 @@ public class CajaMovClienteController implements Initializable {
     private ClienteJpaController jpaCliente;
     private CajaMovTipoJpaController jpaMovTipo;
     private CajaMovTipo articulo;
+    private CajaMovService srvCaja;
+    private HistorialService srvHistorial;
 
     public void InitService() {
         System.out.println("ar.sys.Cliente.ClienteService.<init>()");
@@ -103,6 +105,8 @@ public class CajaMovClienteController implements Initializable {
         jpaArticulo = new CajaMovClienteJpaController(factory);
         jpaCliente = new ClienteJpaController(factory);
         jpaMovTipo = new CajaMovTipoJpaController(factory);
+        srvCaja = new CajaMovService();
+        srvHistorial = new HistorialService();
     }
 
     public void loadDataArticulo() {
@@ -166,10 +170,7 @@ public class CajaMovClienteController implements Initializable {
     public void ClienteCobrarDialog() throws Exception {
         System.out.println("ar.nex.syscontrol.caja.CajaMovClienteController.ClienteCobrarDialog()");
         if (selectCliente == null) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error!!!");
-            alert.setContentText("Seleccione un Cliente primero, PAVO!!!");
-            alert.showAndWait();
+            DialogController.showError("Seleccione un Cliente primero, PAVO!!!");
         } else {
 
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -210,6 +211,7 @@ public class CajaMovClienteController implements Initializable {
         System.out.println("ar.nex.syscontrol.caja.CajaMovClienteController.ClienteCobrar()");
         try {
             boolean cobrar = true;
+            double pagoCaja = pago;
 
             if (pago <= 0) {
                 cobrar = false;
@@ -236,20 +238,10 @@ public class CajaMovClienteController implements Initializable {
                             cmc.setComentario("Saldo pendiente $" + (data.getImporte() - pago));
                             jpaArticulo.create(cmc);
 
-                            //data.setComentario("Saldo pendiente $" + (data.getImporte() - pago));
-                            // data.setEstado(1);
-                            //data.setFechaPago(fecha);
-                            //data.setEstado(0);
                             data.setArticulo("Saldo pendiente de " + data.toString());
                             data.setImporte(data.getImporte() - pago);
                             jpaArticulo.edit(data);
 
-//                            CajaMovCliente cmc = new CajaMovCliente();
-//                            cmc.setClienteId(selectCliente.getId());
-//                            cmc.setFechaCompra(fecha);                            
-//                            cmc.setArticulo("Saldo pendiente de " +data.toString());
-//                            cmc.setImporte(data.getImporte() - pago);
-//                            jpaArticulo.create(cmc);
                             clienteSaldo = clienteSaldo - pago;
                             pago = 0;
                         }
@@ -260,6 +252,7 @@ public class CajaMovClienteController implements Initializable {
                 selectCliente.setFecha(fecha);
                 jpaCliente.edit(selectCliente);
 
+                srvCaja.cobroCliente(selectCliente.getNombre(), fecha, pagoCaja);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -276,10 +269,7 @@ public class CajaMovClienteController implements Initializable {
     public void ArticuloAdd() throws Exception {
         System.out.println("ar.nex.syscontrol.caja.CajaMovClienteController.ArticuloAdd()");
         if (selectCliente == null) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error!!!");
-            alert.setContentText("Seleccione un Cliente primero, PAVO!!!");
-            alert.showAndWait();
+            DialogController.showError("Seleccione un Cliente primero, PAVO!!!");
         } else {
 
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -351,7 +341,8 @@ public class CajaMovClienteController implements Initializable {
         System.out.println("ar.nex.syscontrol.config.ConfigController.Delete()");
         try {
             if (selectArticulo != null) {
-                if (confirmDialog(selectArticulo.toString())) {
+                if (DialogController.confirmDialog("Confirma que desea ELIMINAR: " + selectArticulo.toString())) {
+                    srvHistorial.GuardarEvento("Se Elimino del CLiente: " + selectCliente.getNombre() + " el Articulo: " + selectArticulo.toString());
                     jpaArticulo.destroy(selectArticulo.getId());
                     if (selectCliente.getSaldo() != null) {
                         selectCliente.setSaldo(selectCliente.getSaldo() - selectArticulo.getImporte());
@@ -368,35 +359,52 @@ public class CajaMovClienteController implements Initializable {
     }
 
     @FXML
-    void goSignOut() throws IOException {
-        MainApp.showMainMenu();
-    }
+    public void CajaDetalleCliente() {
+        System.out.println("ar.nex.syscontrol.caja.CajaMovClienteController.CajaDetalleCliente()");
+        try {
+            if (selectCliente == null) {
+//                Alert alert = new Alert(AlertType.ERROR);
+//                alert.setTitle("Error!!!");
+//                alert.setContentText("Seleccione un Cliente primero, PAVO!!!");
+//                alert.showAndWait();
+                DialogController.showError("Seleccione un Cliente primero, PAVO!!!");
+            } else {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/caja/CajaDetalleCliente.fxml"));
+                Parent root1 = (Parent) fxmlLoader.load();
+                root1.getStylesheets().add("/styles/CajaDetalleCliente.css");
 
-    public boolean confirmDialog(String str) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Confirma que desea ELIMINAR: " + str);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            return true;
-        } else {
-            return false;
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root1));
+                stage.showAndWait();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(CajaMovClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @FXML
-    public void goCliente() {
-        try {
-            System.out.println("ar.nex.syscontrol.caja.CajaMovClienteController.goCliente()");
+    void goSignOut() throws IOException {
+        MainApp.showMainMenu();
+    }
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Cliente.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.setScene(new Scene(root1));
-            stage.showAndWait();
-       
+//    public boolean confirmDialog(String str) {
+//        Alert alert = new Alert(AlertType.CONFIRMATION);
+//        alert.setTitle("Confirmation Dialog");
+//        alert.setHeaderText("Confirma que desea ELIMINAR: " + str);
+//
+//        Optional<ButtonType> result = alert.showAndWait();
+//        if (result.get() == ButtonType.OK) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+
+    @FXML
+    public void goCliente(ActionEvent event) {
+        System.out.println("ar.nex.syscontrol.caja.CajaMovClienteController.goCliente()");
+        try {
+            MainApp.showClientes();
         } catch (IOException ex) {
             Logger.getLogger(CajaMovClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -406,14 +414,9 @@ public class CajaMovClienteController implements Initializable {
     public void goArticulo() {
         System.out.println("ar.nex.syscontrol.caja.CajaMovClienteController.goArticulo()");
         try {
-            boolean isLogin = true;
-            if (isLogin) {
-                MainApp.showArticulos();
-            } else {
-                System.out.println("ar.nex.syscontrol.MainMenuController.goSignIn(): ERROR");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            MainApp.showArticulos();
+        } catch (IOException ex) {
+            Logger.getLogger(CajaMovClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -435,6 +438,14 @@ public class CajaMovClienteController implements Initializable {
         SortedList<Cliente> sortedData = new SortedList<>(filteredCliente);
         sortedData.comparatorProperty().bind(tblCliente.comparatorProperty());
         tblCliente.setItems(sortedData);
+    }
+
+    public static Cliente getSelectCliente() {
+        return selectCliente;
+    }
+
+    public static void setSelectCliente(Cliente selectCliente) {
+        CajaMovClienteController.selectCliente = selectCliente;
     }
 
 }
