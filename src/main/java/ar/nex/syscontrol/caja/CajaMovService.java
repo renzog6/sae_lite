@@ -40,7 +40,24 @@ public class CajaMovService implements Serializable {
             mov.setImporte(importe);
             mov.setSaldo(service.findLast().getSaldo() + importe);
             service.create(mov);
+            srvHistorial = new HistorialService();
+            srvHistorial.GuardarEvento(mov.toHsitorial());
+        } catch (Exception ex) {
+            Logger.getLogger(CajaMovService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
+    public void addMov(String fecha, String tipo, String detalle,double importe) {
+        try {
+            CajaMov mov = new CajaMov();
+            mov.setFecha(fecha);
+            mov.setMov(tipo + " > " + detalle);
+            if (tipo.contains("Pago")) {
+               importe = -1*importe;
+            }
+            mov.setImporte(importe);
+            mov.setSaldo(service.findLast().getSaldo() + importe);
+            service.create(mov);
             srvHistorial = new HistorialService();
             srvHistorial.GuardarEvento(mov.toHsitorial());
         } catch (Exception ex) {

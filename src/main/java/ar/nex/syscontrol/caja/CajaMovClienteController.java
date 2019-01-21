@@ -279,7 +279,7 @@ public class CajaMovClienteController implements Initializable {
             GridPane grid = new GridPane();
             grid.setHgap(10);
             grid.setVgap(10);
-            grid.setPadding(new Insets(20, 150, 10, 10));
+            grid.setPadding(new Insets(20, 20, 10, 10));
 
             grid.add(new Label("Fecha: "), 0, 0);
             TextField fecha = new TextField();
@@ -287,6 +287,7 @@ public class CajaMovClienteController implements Initializable {
             DateFormat fd = new SimpleDateFormat("dd/MM/yyyy");
             fecha.setText(fd.format(d));
             fecha.setAlignment(Pos.CENTER);
+            fecha.setPrefWidth(200);
             grid.add(fecha, 1, 0);
 
             grid.add(new Label("Articulo: "), 0, 1);
@@ -342,7 +343,7 @@ public class CajaMovClienteController implements Initializable {
         try {
             if (selectArticulo != null) {
                 if (DialogController.confirmDialog("Confirma que desea ELIMINAR: " + selectArticulo.toString())) {
-                    srvHistorial.GuardarEvento("Se Elimino del CLiente: " + selectCliente.getNombre() + " el Articulo: " + selectArticulo.toString());
+                    srvHistorial.GuardarEvento("Se Elimino del Cliente: " + selectCliente.getNombre() + " el Articulo: " + selectArticulo.toString());
                     jpaArticulo.destroy(selectArticulo.getId());
                     if (selectCliente.getSaldo() != null) {
                         selectCliente.setSaldo(selectCliente.getSaldo() - selectArticulo.getImporte());

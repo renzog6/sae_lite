@@ -127,7 +127,7 @@ public class ArticuloController implements Initializable {
         }
         loadDatabaseData();
         MainApp.showInformationAlertBox("Nuevo Aticulo: " + nombre + " Added Successfully!");        
-        historial.GuardarEvento("New CajaMovTipo > Articulo: " + nombre+" a $"+importe);
+        historial.GuardarEvento("Nuevo > Articulo: " + nombre+" a $"+importe);
     }
 
     static CajaMovTipo usuarioSelect;
